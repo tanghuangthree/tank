@@ -9,11 +9,12 @@ import java.awt.event.WindowEvent;
 import static com.mashibing.vo.Dir.*;
 
 public class TankFrame extends Frame {
-    private final Tank tank = new Tank(200, 200, DOWN);
-    private final Bullet bullet = new Bullet(200, 200, DOWN);
+    private static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
+    private Tank tank = new Tank(200, 200, DOWN);
+    private Bullet bullet = new Bullet(200, 200, DOWN);
 
     public TankFrame() {
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HIGHT);
         setResizable(false);
         setTitle("Tank War");
         setVisible(true);
@@ -30,6 +31,20 @@ public class TankFrame extends Frame {
         bullet.paint(g);
     }
 
+    Image offSrceenImage = null;
+    @Override public void update(Graphics g) {
+        if (offSrceenImage == null) {
+            offSrceenImage = createImage(GAME_WIDTH, GAME_HIGHT);
+        }
+        Graphics imageGraphic = offSrceenImage.getGraphics();
+        Color c = imageGraphic.getColor();
+        imageGraphic.setColor(Color.BLACK);
+        imageGraphic.fillRect(0, 0, GAME_WIDTH, GAME_HIGHT);
+        imageGraphic.setColor(c);
+        paint(imageGraphic);
+        g.drawImage(offSrceenImage, 0, 0, null);
+
+    }
 
     class MyKeyListener extends KeyAdapter {
         boolean bL = false;
