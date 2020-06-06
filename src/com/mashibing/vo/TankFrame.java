@@ -13,7 +13,7 @@ import static com.mashibing.vo.Dir.*;
 
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
-    public Tank tank = new Tank(200, 400, UP, this);
+    public Tank tank = new Tank(200, 400, UP, Group.GOOD, this);
     public List<Bullet> bullets = new ArrayList<>();
     public List<Tank> tanks = new ArrayList<>();
 
@@ -46,19 +46,11 @@ public class TankFrame extends Frame {
         }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < tanks.size(); j++) {
-             collideWith(bullets.get(i), tanks.get(j));
+                bullets.get(i).collideWith(tanks.get(j));
             }
         }
     }
 
-    private void collideWith(Bullet bullet, Tank tank) {
-        Rectangle rectangle1 = new Rectangle(bullet.getX(), bullet.getY(),bullet.WIDTH, bullet.HIGHT);
-        Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(),tank.WIDTH, tank.HIGHT);
-        if (rectangle1.intersects(rectangle2)) {
-            bullet.die();
-            tank.die();
-        }
-    }
 
     private void die(Tank tank) {
         tanks.remove(tank);
