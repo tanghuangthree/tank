@@ -1,17 +1,21 @@
 package com.mashibing.vo;
 
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mashibing.vo.Dir.*;
 
 public class TankFrame extends Frame {
-    private static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
-    private Tank tank = new Tank(200, 200, DOWN);
-    private Bullet bullet = new Bullet(200, 200, DOWN);
+    public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
+    public Tank tank = new Tank(200, 400, UP, this);
+    public List<Bullet> bullets = new ArrayList<>();
+    public List<Tank> tanks = new ArrayList<>();
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HIGHT);
@@ -27,11 +31,41 @@ public class TankFrame extends Frame {
     }
 
     @Override public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("我方子弹数量：" + bullets.size(), 10, 60);
+        g.drawString("敌方坦克数量：" + tanks.size(), 10, 80);
+        g.setColor(c);
         tank.paint(g);
-        bullet.paint(g);
+
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).paint(g);
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+             collideWith(bullets.get(i), tanks.get(j));
+            }
+        }
+    }
+
+    private void collideWith(Bullet bullet, Tank tank) {
+        Rectangle rectangle1 = new Rectangle(bullet.getX(), bullet.getY(),bullet.WIDTH, bullet.HIGHT);
+        Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(),tank.WIDTH, tank.HIGHT);
+        if (rectangle1.intersects(rectangle2)) {
+            bullet.die();
+            tank.die();
+        }
+    }
+
+    private void die(Tank tank) {
+        tanks.remove(tank);
     }
 
     Image offSrceenImage = null;
+
     @Override public void update(Graphics g) {
         if (offSrceenImage == null) {
             offSrceenImage = createImage(GAME_WIDTH, GAME_HIGHT);
@@ -67,6 +101,9 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = true;
                     break;
+                case KeyEvent.VK_SHIFT:
+                    tank.fire();
+                    break;
                 default:
                     break;
             }
@@ -95,7 +132,12 @@ public class TankFrame extends Frame {
         }
 
         public void setMainTankDir() {
-            tank.setMoving(!bL && !bR && !bU && !bD);
+            if (!bL && !bR && !bU && !bD) {
+                tank.setMoving(false);
+            } else {
+                tank.setMoving(true);
+            }
+
             if (bL) {
                 tank.setDir(LEFT);
             }

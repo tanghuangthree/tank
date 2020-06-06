@@ -4,22 +4,64 @@ import java.awt.*;
 
 public class Bullet {
     private static final int SPEED = 5;
-    private static final int WIDTH = 30;
-    private static final int HIGHT = 30;
+    public final int WIDTH = ResourceMgr.bulletD.getWidth();
+    public final int HIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
-    private final Dir dir;
 
-    public Bullet(int x, int y, Dir dir) {
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    private final Dir dir;
+    private boolean living = true;
+    private TankFrame tf;
+
+    public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.red);
-        g.fillOval(x, y, WIDTH, HIGHT);
-        g.setColor(c);
+
+        if (!living) {
+            tf.bullets.remove(this);
+        }
+
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceMgr.bulletL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.bulletR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.bulletU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.bulletD, x, y, null);
+                break;
+            default:
+                break;
+        }
+
+        move();
+    }
+
+    private void move() {
         switch (dir) {
             case UP:
                 y -= SPEED;
@@ -36,6 +78,14 @@ public class Bullet {
             default:
                 break;
         }
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HIGHT) {
+            living = false;
+        } else {
+            living = true;
+        }
     }
 
+    public void die() {
+        this.living = false;
+    }
 }
