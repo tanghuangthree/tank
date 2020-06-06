@@ -1,9 +1,6 @@
 package com.mashibing;
 
-import com.mashibing.vo.Dir;
-import com.mashibing.vo.Group;
-import com.mashibing.vo.Tank;
-import com.mashibing.vo.TankFrame;
+import com.mashibing.vo.*;
 
 public class Main {
 
