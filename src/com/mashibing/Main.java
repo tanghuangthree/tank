@@ -1,7 +1,5 @@
 package com.mashibing;
 
-import com.mashibing.vo.*;
-
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
