@@ -5,7 +5,7 @@ import java.awt.*;
 public class Expload {
     private int x, y;
     private TankFrame tf;
-    private static final int WIDTH = ResourceMgr.exploads[0].getWidth(), HIGHT = ResourceMgr.exploads[0].getHeight();
+    public static final int WIDTH = ResourceMgr.exploads[0].getWidth(), HIGHT = ResourceMgr.exploads[0].getHeight();
     private int step = 0;
 
     public Expload(int x, int y, TankFrame tf) {

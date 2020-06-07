@@ -13,9 +13,9 @@ import static com.mashibing.Dir.*;
 
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
-    public Tank tank = new Tank(200, 400, UP, Group.GOOD, this);
+    public Tank goodTank = new Tank(200, 400, UP, Group.GOOD, false, this);
     public List<Bullet> bullets = new ArrayList<>();
-    public List<Tank> tanks = new ArrayList<>();
+    public List<Tank> badTanks = new ArrayList<>();
     public List<Expload> exploads = new ArrayList<>();
 
     public TankFrame() {
@@ -34,13 +34,13 @@ public class TankFrame extends Frame {
     @Override public void paint(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("我方子弹数量：" + bullets.size(), 10, 60);
-        g.drawString("敌方坦克数量：" + tanks.size(), 10, 80);
+        g.drawString("子弹数量：" + bullets.size(), 10, 60);
+        g.drawString("敌方坦克数量：" + badTanks.size(), 10, 80);
         g.setColor(c);
-        tank.paint(g);
+        goodTank.paint(g);
 
-        for (int i = 0; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
+        for (int i = 0; i < badTanks.size(); i++) {
+            badTanks.get(i).paint(g);
         }
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
@@ -51,15 +51,15 @@ public class TankFrame extends Frame {
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collideWith(tanks.get(j));
+            for (int j = 0; j < badTanks.size(); j++) {
+                bullets.get(i).collideWith(badTanks.get(j));
             }
         }
     }
 
 
     private void die(Tank tank) {
-        tanks.remove(tank);
+        badTanks.remove(tank);
     }
 
     Image offSrceenImage = null;
@@ -100,7 +100,8 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_SHIFT:
-                    tank.fire();
+                    goodTank.fire();
+                    new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
                     break;
                 default:
                     break;
@@ -131,22 +132,23 @@ public class TankFrame extends Frame {
 
         public void setMainTankDir() {
             if (!bL && !bR && !bU && !bD) {
-                tank.setMoving(false);
+                goodTank.setMoving(false);
             } else {
-                tank.setMoving(true);
+                goodTank.setMoving(true);
+                new Thread(()->new Audio("audio/tank_move.wav").play()).start();
             }
 
             if (bL) {
-                tank.setDir(LEFT);
+                goodTank.setDir(LEFT);
             }
             if (bR) {
-                tank.setDir(RIGHT);
+                goodTank.setDir(RIGHT);
             }
             if (bU) {
-                tank.setDir(UP);
+                goodTank.setDir(UP);
             }
             if (bD) {
-                tank.setDir(DOWN);
+                goodTank.setDir(DOWN);
             }
         }
 

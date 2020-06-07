@@ -4,10 +4,11 @@ import java.awt.*;
 
 public class Bullet {
     private static final int SPEED = 5;
-    public final int WIDTH = ResourceMgr.bulletD.getWidth();
-    public final int HIGHT = ResourceMgr.bulletD.getHeight();
+    public static final int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static final int HIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
     private Group group;
+    Rectangle rect = new Rectangle();
 
     public int getX() {
         return x;
@@ -35,6 +36,10 @@ public class Bullet {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
+        rect.x = x;
+        rect.y = y;
+        rect.width = WIDTH;
+        rect.height = HIGHT;
     }
 
     public void paint(Graphics g) {
@@ -85,6 +90,9 @@ public class Bullet {
         } else {
             living = true;
         }
+        // update rect
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
     public void die() {
@@ -95,12 +103,13 @@ public class Bullet {
         if (this.group.equals(tank.getGroup())) {
             return;
         }
-        Rectangle rectangle1 = new Rectangle(this.x, this.y, this.WIDTH, this.HIGHT);
-        Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(), tank.WIDTH, tank.HIGHT);
-        if (rectangle1.intersects(rectangle2)) {
+        if (rect.intersects(tank.rect)) {
             this.die();
             tank.die();
-            tf.exploads.add(new Expload(x, y, tf));
+            int eX = tank.getX() + Tank.WIDTH/2 - Expload.WIDTH/2;
+            int eY = tank.getY() + Tank.HIGHT/2 - Expload.HIGHT/2;
+            tf.exploads.add(new Expload(eX, eY, tf));
+            new Thread(()->new Audio("audio/explode.wav").play()).start();
         }
     }
 }
