@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class PropertiesMgr {
     static Properties props = new Properties();
-
+    private PropertiesMgr() {}
     static {
         try {
             props.load(PropertiesMgr.class.getClassLoader().getResourceAsStream("config"));

@@ -10,9 +10,10 @@ public class ResourceMgr {
     public static BufferedImage bulletL, bulletR, bulletU, bulletD;
     public static BufferedImage[] exploads = new BufferedImage[16];
 
+    private ResourceMgr() {}
+
     static {
         try {
-
             goodTankU = ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/GoodTank1.png"));
             goodTankD = ImageUtil.rotateImage(goodTankU, 180);
             goodTankL = ImageUtil.rotateImage(goodTankU, -90);
@@ -35,4 +36,7 @@ public class ResourceMgr {
             e.printStackTrace();
         }
     }
+
+
+
 }
