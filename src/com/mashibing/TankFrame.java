@@ -100,8 +100,13 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_SHIFT:
-                    goodTank.fire();
-                    new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+                    try {
+                       FireStrategy fireStrategy = (FireStrategy) Class.forName((String)PropertiesMgr.get("goodFireStrategy")).newInstance();
+                        goodTank.fire(fireStrategy);
+                        new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+                    } catch (Exception exception) {
+                        System.out.println(exception.getMessage());
+                    }
                     break;
                 default:
                     break;

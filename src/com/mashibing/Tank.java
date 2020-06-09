@@ -1,18 +1,20 @@
 package com.mashibing;
 
+import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Tank {
-    private int x;
-    private int y;
-    private Dir dir;
+    int x;
+    int y;
+    Dir dir;
     private static final int SPEED = 3;
-    private TankFrame tf;
+    TankFrame tf;
     public static final int WIDTH = ResourceMgr.badTankD.getWidth();
     public static final int HIGHT = ResourceMgr.badTankD.getHeight();
     private boolean living = true;
-    private Group group;
+    Group group;
     private boolean moving;
     private Random random = new Random();
     Rectangle rect = new Rectangle();
@@ -117,7 +119,7 @@ public class Tank {
         }
         if (random.nextInt(100) > 95) {
             if (Group.BAD.equals(this.group)) {
-                fire();
+                fire(new DefaultFireStrategy());
             }
         }
         randomDir();
@@ -148,24 +150,8 @@ public class Tank {
         }
     }
 
-    public void fire() {
-        switch (dir) {
-            case LEFT:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group, tf));
-                break;
-            case RIGHT:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group, tf));
-                break;
-            case UP:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group, tf));
-                break;
-            case DOWN:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group, tf));
-                break;
-            default:
-                break;
-        }
-
+    public void fire(FireStrategy fireStrategy) {
+        fireStrategy.fire(this);
     }
 
     public void die() {

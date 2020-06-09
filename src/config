@@ -1,2 +1,3 @@
 # defined tank init count
 initTankCount=10
+goodFireStrategy=com.mashibing.FourDirFireStrategy
