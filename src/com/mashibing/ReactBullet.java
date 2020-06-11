@@ -4,7 +4,7 @@ import com.mashibing.abstractfactory.BaseBullet;
 
 import java.awt.*;
 
-public class Bullet extends BaseBullet {
+public class ReactBullet extends BaseBullet {
     private static final int SPEED = 5;
     public static final int WIDTH = ResourceMgr.bulletD.getWidth();
     public static final int HIGHT = ResourceMgr.bulletD.getHeight();
@@ -32,7 +32,7 @@ public class Bullet extends BaseBullet {
     private boolean living = true;
     private TankFrame tf;
 
-    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public ReactBullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -52,7 +52,7 @@ public class Bullet extends BaseBullet {
             tf.bullets.remove(this);
         }
 
-        switch (dir) {
+       /* switch (dir) {
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL, x, y, null);
                 break;
@@ -67,7 +67,12 @@ public class Bullet extends BaseBullet {
                 break;
             default:
                 break;
-        }
+        }*/
+
+        Color c = g.getColor();
+        g.setColor(Color.RED);
+        g.fillRect(x,y,20,20);
+        g.setColor(c);
 
         move();
     }

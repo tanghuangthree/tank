@@ -1,6 +1,10 @@
 package com.mashibing;
 
 
+import com.mashibing.abstractfactory.AbstractFactory;
+import com.mashibing.abstractfactory.BaseBullet;
+import com.mashibing.abstractfactory.DefaultFactory;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,9 +18,10 @@ import static com.mashibing.Dir.*;
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
     public Tank goodTank = new Tank(200, 400, UP, Group.GOOD, false, this);
-    public List<Bullet> bullets = new ArrayList<>();
+    public List<BaseBullet> bullets = new ArrayList<>();
     public List<Tank> badTanks = new ArrayList<>();
     public List<Expload> exploads = new ArrayList<>();
+
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HIGHT);
