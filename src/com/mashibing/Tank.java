@@ -8,7 +8,7 @@ public class Tank {
     private int y;
     private Dir dir;
     private static final int SPEED = 3;
-    private TankFrame tf;
+    private GameModel model;
     public static final int WIDTH = ResourceMgr.badTankD.getWidth();
     public static final int HIGHT = ResourceMgr.badTankD.getHeight();
     private boolean living = true;
@@ -17,13 +17,13 @@ public class Tank {
     private Random random = new Random();
     Rectangle rect = new Rectangle();
 
-    public Tank(int x, int y, Dir dir, Group group, boolean moving, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, boolean moving, GameModel model) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
         this.moving = moving;
-        this.tf = tf;
+        this.model = model;
         rect.x = x;
         rect.y = y;
         rect.width = WIDTH;
@@ -73,7 +73,7 @@ public class Tank {
 
     public void paint(Graphics g) {
         if (!living) {
-            tf.badTanks.remove(this);
+            model.badTanks.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -151,16 +151,16 @@ public class Tank {
     public void fire() {
         switch (dir) {
             case LEFT:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group, tf));
+                model.bullets.add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group, model));
                 break;
             case RIGHT:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group, tf));
+                model.bullets.add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group, model));
                 break;
             case UP:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group, tf));
+                model.bullets.add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group, model));
                 break;
             case DOWN:
-                tf.bullets.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group, tf));
+                model.bullets.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group, model));
                 break;
             default:
                 break;

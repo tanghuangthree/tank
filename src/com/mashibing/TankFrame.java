@@ -6,17 +6,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.mashibing.Dir.*;
 
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
-    public Tank goodTank = new Tank(200, 400, UP, Group.GOOD, false, this);
-    public List<Bullet> bullets = new ArrayList<>();
-    public List<Tank> badTanks = new ArrayList<>();
-    public List<Expload> exploads = new ArrayList<>();
+
+    GameModel model = new GameModel();
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HIGHT);
@@ -32,35 +28,9 @@ public class TankFrame extends Frame {
     }
 
     @Override public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹数量：" + bullets.size(), 10, 60);
-        g.drawString("敌方坦克数量：" + badTanks.size(), 10, 80);
-        g.setColor(c);
-        goodTank.paint(g);
-
-        for (int i = 0; i < badTanks.size(); i++) {
-            badTanks.get(i).paint(g);
-        }
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).paint(g);
-        }
-
-        for (int i = 0; i < exploads.size(); i++) {
-            exploads.get(i).paint(g);
-        }
-
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < badTanks.size(); j++) {
-                bullets.get(i).collideWith(badTanks.get(j));
-            }
-        }
+        model.paint(g);
     }
 
-
-    private void die(Tank tank) {
-        badTanks.remove(tank);
-    }
 
     Image offSrceenImage = null;
 
@@ -100,8 +70,8 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_SHIFT:
-                    goodTank.fire();
-                    new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+                    model.goodTank.fire();
+                    new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
                     break;
                 default:
                     break;
@@ -131,11 +101,12 @@ public class TankFrame extends Frame {
         }
 
         public void setMainTankDir() {
+            Tank goodTank = model.goodTank;
             if (!bL && !bR && !bU && !bD) {
                 goodTank.setMoving(false);
             } else {
                 goodTank.setMoving(true);
-                new Thread(()->new Audio("audio/tank_move.wav").play()).start();
+                new Thread(() -> new Audio("audio/tank_move.wav").play()).start();
             }
 
             if (bL) {

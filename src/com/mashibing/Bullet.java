@@ -28,14 +28,14 @@ public class Bullet {
 
     private final Dir dir;
     private boolean living = true;
-    private TankFrame tf;
+    private GameModel model;
 
-    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, Group group, GameModel model) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.model = model;
         rect.x = x;
         rect.y = y;
         rect.width = WIDTH;
@@ -45,7 +45,7 @@ public class Bullet {
     public void paint(Graphics g) {
 
         if (!living) {
-            tf.bullets.remove(this);
+            model.bullets.remove(this);
         }
 
         switch (dir) {
@@ -106,10 +106,10 @@ public class Bullet {
         if (rect.intersects(tank.rect)) {
             this.die();
             tank.die();
-            int eX = tank.getX() + Tank.WIDTH/2 - Expload.WIDTH/2;
-            int eY = tank.getY() + Tank.HIGHT/2 - Expload.HIGHT/2;
-            tf.exploads.add(new Expload(eX, eY, tf));
-            new Thread(()->new Audio("audio/explode.wav").play()).start();
+            int eX = tank.getX() + Tank.WIDTH / 2 - Expload.WIDTH / 2;
+            int eY = tank.getY() + Tank.HIGHT / 2 - Expload.HIGHT / 2;
+            model.exploads.add(new Expload(eX, eY, model));
+            new Thread(() -> new Audio("audio/explode.wav").play()).start();
         }
     }
 }
