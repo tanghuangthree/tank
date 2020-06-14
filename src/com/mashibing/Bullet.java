@@ -2,12 +2,12 @@ package com.mashibing;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends GameObject{
     private static final int SPEED = 5;
     public static final int WIDTH = ResourceMgr.bulletD.getWidth();
     public static final int HIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
-    private Group group;
+    public Group group;
     Rectangle rect = new Rectangle();
 
     public int getX() {
@@ -28,7 +28,7 @@ public class Bullet {
 
     private final Dir dir;
     private boolean living = true;
-    private GameModel model;
+    public GameModel model;
 
     public Bullet(int x, int y, Dir dir, Group group, GameModel model) {
         this.x = x;
@@ -42,10 +42,10 @@ public class Bullet {
         rect.height = HIGHT;
     }
 
-    public void paint(Graphics g) {
+    @Override public void paint(Graphics g) {
 
         if (!living) {
-            model.bullets.remove(this);
+            model.remove(this);
         }
 
         switch (dir) {
@@ -97,19 +97,5 @@ public class Bullet {
 
     public void die() {
         this.living = false;
-    }
-
-    public void collideWith(Tank tank) {
-        if (this.group.equals(tank.getGroup())) {
-            return;
-        }
-        if (rect.intersects(tank.rect)) {
-            this.die();
-            tank.die();
-            int eX = tank.getX() + Tank.WIDTH / 2 - Expload.WIDTH / 2;
-            int eY = tank.getY() + Tank.HIGHT / 2 - Expload.HIGHT / 2;
-            model.exploads.add(new Expload(eX, eY, model));
-            new Thread(() -> new Audio("audio/explode.wav").play()).start();
-        }
     }
 }

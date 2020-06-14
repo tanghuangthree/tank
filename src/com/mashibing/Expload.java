@@ -2,7 +2,7 @@ package com.mashibing;
 
 import java.awt.*;
 
-public class Expload {
+public class Expload extends GameObject {
     private int x, y;
     private GameModel model;
     public static final int WIDTH = ResourceMgr.exploads[0].getWidth(), HIGHT = ResourceMgr.exploads[0].getHeight();
@@ -14,11 +14,11 @@ public class Expload {
         this.model = model;
     }
 
-    public void paint(Graphics g) {
+    @Override public void paint(Graphics g) {
         g.drawImage(ResourceMgr.exploads[step++], x, y, null);
         if (step >= ResourceMgr.exploads.length) {
             step = 0;
-            model.exploads.remove(this);
+            model.remove(this);
         }
     }
 }
