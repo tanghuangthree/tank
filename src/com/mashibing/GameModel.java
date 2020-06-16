@@ -7,19 +7,37 @@ import java.util.List;
 import static com.mashibing.Dir.UP;
 
 public class GameModel {
-    public Tank goodTank = new Tank(200, 400, UP, Group.GOOD, false, this);
+
+    public static final GameModel INSTANCE = new GameModel();
+
+    static {
+        INSTANCE.init();
+    }
+
+    public Tank goodTank = new Tank(200, 400, UP, Group.GOOD, false);
 
     List<GameObject> gm = new ArrayList<>();
 
     ColliderChain colliderChain = new ColliderChain();
 
-    public GameModel() {
-        System.out.println(PropertiesMgr.get("initTankCount"));
+    private GameModel() {
+    }
+
+    public static GameModel getInstance() {
+        return INSTANCE;
+    }
+
+    public void init() {
+
+        add(new Wall(60, 100, 500, 50));
+        add(new Wall(60, 180, 50, 400));
+
         int initTankCount = Integer.parseInt((String) PropertiesMgr.get("initTankCount"));
         //  初始化敌方坦克
         for (int i = 0; i < initTankCount; i++) {
-            add(new Tank(100 + (i * 100), 200, Dir.DOWN, Group.BAD, true, this));
+            add(new Tank(100 + (i * 100), 200, Dir.DOWN, Group.BAD, true));
         }
+
     }
 
     public void add(GameObject object) {

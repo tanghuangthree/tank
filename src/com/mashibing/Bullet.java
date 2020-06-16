@@ -6,9 +6,8 @@ public class Bullet extends GameObject{
     private static final int SPEED = 5;
     public static final int WIDTH = ResourceMgr.bulletD.getWidth();
     public static final int HIGHT = ResourceMgr.bulletD.getHeight();
-    private int x, y;
     public Group group;
-    Rectangle rect = new Rectangle();
+    public Rectangle rect;
 
     public int getX() {
         return x;
@@ -28,24 +27,19 @@ public class Bullet extends GameObject{
 
     private final Dir dir;
     private boolean living = true;
-    public GameModel model;
 
-    public Bullet(int x, int y, Dir dir, Group group, GameModel model) {
+    public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.model = model;
-        rect.x = x;
-        rect.y = y;
-        rect.width = WIDTH;
-        rect.height = HIGHT;
+        rect = new Rectangle(x,y,WIDTH,HIGHT);
     }
 
     @Override public void paint(Graphics g) {
 
         if (!living) {
-            model.remove(this);
+            GameModel.getInstance().remove(this);
         }
 
         switch (dir) {

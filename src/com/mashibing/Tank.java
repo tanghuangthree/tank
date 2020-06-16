@@ -4,30 +4,24 @@ import java.awt.*;
 import java.util.Random;
 
 public class Tank extends GameObject {
-    private int x;
-    private int y;
+    private int oldX, oldY;
     private Dir dir;
     private static final int SPEED = 3;
-    private GameModel model;
     public static final int WIDTH = ResourceMgr.badTankD.getWidth();
     public static final int HIGHT = ResourceMgr.badTankD.getHeight();
     private boolean living = true;
     private Group group;
     private boolean moving;
     private Random random = new Random();
-    Rectangle rect = new Rectangle();
+    public Rectangle rect;
 
-    public Tank(int x, int y, Dir dir, Group group, boolean moving, GameModel model) {
+    public Tank(int x, int y, Dir dir, Group group, boolean moving) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
         this.moving = moving;
-        this.model = model;
-        rect.x = x;
-        rect.y = y;
-        rect.width = WIDTH;
-        rect.height = HIGHT;
+        rect = new Rectangle(x, y, WIDTH, HIGHT);
     }
 
     public Group getGroup() {
@@ -73,7 +67,7 @@ public class Tank extends GameObject {
 
     @Override public void paint(Graphics g) {
         if (!living) {
-            model.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -96,6 +90,8 @@ public class Tank extends GameObject {
     }
 
     public void move() {
+        oldX = x;
+        oldY = y;
         if (!moving) {
             return;
         }
@@ -151,16 +147,16 @@ public class Tank extends GameObject {
     public void fire() {
         switch (dir) {
             case LEFT:
-                model.add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group, model));
+                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group));
                 break;
             case RIGHT:
-                model.add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group, model));
+                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group));
                 break;
             case UP:
-                model.add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group, model));
+                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group));
                 break;
             case DOWN:
-                model.add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group, model));
+                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group));
                 break;
             default:
                 break;
@@ -174,5 +170,10 @@ public class Tank extends GameObject {
 
     public void stop() {
         moving = false;
+    }
+
+    public void back(){
+        x = oldX;
+        y = oldY;
     }
 }

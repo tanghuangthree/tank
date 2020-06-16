@@ -12,8 +12,6 @@ import static com.mashibing.Dir.*;
 public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HIGHT = 600;
 
-    GameModel model = new GameModel();
-
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HIGHT);
         setResizable(false);
@@ -28,7 +26,7 @@ public class TankFrame extends Frame {
     }
 
     @Override public void paint(Graphics g) {
-        model.paint(g);
+        GameModel.getInstance().paint(g);
     }
 
 
@@ -70,7 +68,7 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_SHIFT:
-                    model.goodTank.fire();
+                    GameModel.getInstance().goodTank.fire();
                     new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
                     break;
                 default:
@@ -101,7 +99,7 @@ public class TankFrame extends Frame {
         }
 
         public void setMainTankDir() {
-            Tank goodTank = model.goodTank;
+            Tank goodTank = GameModel.getInstance().goodTank;
             if (!bL && !bR && !bU && !bD) {
                 goodTank.setMoving(false);
             } else {
