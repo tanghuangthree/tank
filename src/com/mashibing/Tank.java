@@ -89,6 +89,14 @@ public class Tank extends GameObject {
         move();
     }
 
+    @Override protected int getWidth() {
+        return WIDTH;
+    }
+
+    @Override protected int getHight() {
+        return HIGHT;
+    }
+
     public void move() {
         oldX = x;
         oldY = y;
@@ -147,16 +155,16 @@ public class Tank extends GameObject {
     public void fire() {
         switch (dir) {
             case LEFT:
-                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group));
+                GameModel.getInstance().add(new RectDecorator(new TailDecorator(new Bullet(x + ResourceMgr.goodTankL.getWidth() / 2 - ResourceMgr.bulletL.getWidth() / 2 - 20, y + ResourceMgr.goodTankL.getHeight() / 2 - ResourceMgr.bulletL.getHeight() / 2 - 1, dir, this.group))));
                 break;
             case RIGHT:
-                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group));
+                GameModel.getInstance().add(new RectDecorator(new TailDecorator(new Bullet(x + ResourceMgr.goodTankR.getWidth() / 2 - ResourceMgr.bulletR.getWidth() / 2 + 20, y + ResourceMgr.goodTankR.getHeight() / 2 - ResourceMgr.bulletR.getHeight() / 2 + 1, dir, this.group))));
                 break;
             case UP:
-                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group));
+                GameModel.getInstance().add(new RectDecorator(new TailDecorator(new Bullet(x + ResourceMgr.goodTankU.getWidth() / 2 - ResourceMgr.bulletU.getWidth() / 2 + 1, y + ResourceMgr.goodTankU.getHeight() / 2 - ResourceMgr.bulletU.getHeight() / 2 - 20, dir, this.group))));
                 break;
             case DOWN:
-                GameModel.getInstance().add(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group));
+                GameModel.getInstance().add(new RectDecorator(new TailDecorator(new Bullet(x + ResourceMgr.goodTankD.getWidth() / 2 - ResourceMgr.bulletD.getWidth() / 2 - 1, y + ResourceMgr.goodTankD.getHeight() / 2 - ResourceMgr.bulletD.getHeight() / 2 + 20, dir, this.group))));
                 break;
             default:
                 break;

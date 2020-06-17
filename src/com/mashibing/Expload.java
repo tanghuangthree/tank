@@ -18,4 +18,12 @@ public class Expload extends GameObject {
             GameModel.getInstance().remove(this);
         }
     }
+
+    @Override protected int getWidth() {
+        return WIDTH;
+    }
+
+    @Override protected int getHight() {
+        return HIGHT;
+    }
 }
